@@ -240,11 +240,12 @@ func (event *Event) Fieldify(timestampFormat string) map[string]interface{} {
 	for key, value := range event.Fields {
 		fields[key] = value
 	}
-	fields["timestamp"] = time.Now().Format(timestampFormat)
 	fields["level"] = event.Level
 	fields["message"] = event.Message
 	if timestampFormat != "" {
 		fields["timestamp"] = event.Timestamp.Format(timestampFormat)
+	} else {
+		fields["timestamp"] = event.Timestamp.Format(time.RFC3339)
 	}
 	fields["caller"] = event.Caller
 	return fields
