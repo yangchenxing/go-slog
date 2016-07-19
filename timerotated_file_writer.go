@@ -13,6 +13,7 @@ import (
 var (
 	tzOffset     time.Duration
 	tzOffsetBack time.Duration
+	newline      = []byte("\n")
 )
 
 func init() {
@@ -42,7 +43,8 @@ func (writer *TimeRotatedFileWriter) Write(content []byte) error {
 	if !writer.serving {
 		writer.startMaid()
 	}
-	_, err := writer.file.Write(content)
+	writer.file.Write(content)
+	_, err := writer.file.Write(newline)
 	return err
 }
 
@@ -85,7 +87,7 @@ func (writer *TimeRotatedFileWriter) stopServe() {
 
 func (writer *TimeRotatedFileWriter) serve() {
 	writer.initializeChans()
-	currentTimestamp := time.Now().Add(tzOffsetBack).Truncate(writer.Interval).Add(writer.Interval)
+	currentTimestamp := time.Now().Add(tzOffsetBack).Truncate(writer.Interval).Add(tzOffset)
 ForLoop:
 	for {
 		nextTimestamp := currentTimestamp.Add(writer.Interval)

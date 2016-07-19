@@ -15,8 +15,11 @@ func init() {
 	HandlerFactory.RegisterType("json", reflect.TypeOf((*JsonHandler)(nil)).Elem())
 	HandlerFactory.RegisterType("plaintext", reflect.TypeOf((*PlainTextHandler)(nil)).Elem())
 
-	HandlerFactory.RegisterInstance("stdout", StdoutWriter)
-	HandlerFactory.RegisterInstance("stderr", StderrWriter)
-	HandlerFactory.RegisterType("email", reflect.TypeOf((*PlainTextEmailHandler)(nil)).Elem())
-	HandlerFactory.RegisterType("time_rotated_file", reflect.TypeOf((*TimeRotatedFileWriter)(nil)).Elem())
+	WriterFactory.RegisterInstance("stdout", StdoutWriter)
+	WriterFactory.RegisterInstance("stderr", StderrWriter)
+	WriterFactory.RegisterType("email", reflect.TypeOf((*PlainTextEmailHandler)(nil)).Elem())
+	WriterFactory.RegisterType("time_rotated_file", reflect.TypeOf((*TimeRotatedFileWriter)(nil)).Elem())
+
+	map2struct.RegisterFactory(HandlerFactory)
+	map2struct.RegisterFactory(WriterFactory)
 }
